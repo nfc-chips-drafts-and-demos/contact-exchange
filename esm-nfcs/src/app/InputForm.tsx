@@ -10,6 +10,7 @@ interface FormData {
 }
 
 const InputForm: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
   const [telegram, setTelegram] = useState<string>('');
   const [socialLayer, setSocialLayer] = useState<string>('');
@@ -23,6 +24,17 @@ const InputForm: React.FC = () => {
     setTelegram('');
     setSocialLayer('');
     setProfileImage('');
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -53,12 +65,8 @@ const InputForm: React.FC = () => {
           />
         </div>
         <div>
-          <label>Create a Profile Image:</label>
-          <input
-            type="text"
-            value={profileImage}
-            onChange={(e) => setProfileImage(e.target.value)}
-          />
+          <label>Upload a picture:</label>
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
         </div>
         <button type="submit">Submit</button>
       </form>
@@ -68,7 +76,11 @@ const InputForm: React.FC = () => {
           <p>Name: {submittedData.name}</p>
           <p>Telegram: {submittedData.telegram}</p>
           <p>Social Layer: {submittedData.socialLayer}</p>
-          <p>Profile Image: {submittedData.profileImage}</p>
+          <p>Uploaded Image:
+            {selectedImage && (
+                <img src={selectedImage} alt="Uploaded" style={{ width: '100%', maxWidth: '400px' }} />
+            )}
+          </p>
         </div>
       )}
     </div>
