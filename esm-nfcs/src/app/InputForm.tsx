@@ -1,3 +1,5 @@
+// components/InputForm.tsx
+
 import React, { useState, FormEvent } from 'react';
 
 interface FormData {
@@ -12,7 +14,6 @@ const InputForm: React.FC = () => {
   const [telegram, setTelegram] = useState<string>('');
   const [socialLayer, setSocialLayer] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
-
   const [submittedData, setSubmittedData] = useState<FormData | null>(null);
 
   const handleSubmit = (e: FormEvent) => {
@@ -39,7 +40,7 @@ const InputForm: React.FC = () => {
           <label>Telegram handle:</label>
           <input
             type="text"
-            value={name}
+            value={telegram}
             onChange={(e) => setTelegram(e.target.value)}
           />
         </div>
@@ -47,7 +48,7 @@ const InputForm: React.FC = () => {
           <label>Social Layer username:</label>
           <input
             type="text"
-            value={name}
+            value={socialLayer}
             onChange={(e) => setSocialLayer(e.target.value)}
           />
         </div>
@@ -55,7 +56,7 @@ const InputForm: React.FC = () => {
           <label>Create a Profile Image:</label>
           <input
             type="text"
-            value={name}
+            value={profileImage}
             onChange={(e) => setProfileImage(e.target.value)}
           />
         </div>
@@ -65,9 +66,9 @@ const InputForm: React.FC = () => {
         <div>
           <h3>Profile:</h3>
           <p>Name: {submittedData.name}</p>
-          <p>Name: {submittedData.telegram}</p>
-          <p>Name: {submittedData.socialLayer}</p>
-          <p>Name: {submittedData.profileImage}</p>
+          <p>Telegram: {submittedData.telegram}</p>
+          <p>Social Layer: {submittedData.socialLayer}</p>
+          <p>Profile Image: {submittedData.profileImage}</p>
         </div>
       )}
     </div>
