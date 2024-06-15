@@ -99,6 +99,13 @@ export default function Home() {
     }
   }, []);
 
+  const createProfile = useCallback(async () => {
+    await fetch("/api/create-profile", { method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: "foo", email: "foo@bar.com", bio: "testing" })
+  })
+  }, []);
+
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24`}
@@ -142,7 +149,7 @@ export default function Home() {
             </Link>
           </div>
         )}
-        
+        <button onClick={createProfile}>create</button>
       </div>
     </main>
   );
