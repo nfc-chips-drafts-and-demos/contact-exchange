@@ -1,5 +1,6 @@
 // components/InputForm.tsx
 
+import "@/styles/form.css";
 import React, { useState, FormEvent } from 'react';
 
 interface FormData {
@@ -37,8 +38,15 @@ const InputForm: React.FC = () => {
     }
   };
 
+  /*
+  TODOS
+  - style better
+  - fix this error: Error: Hydration failed because the initial UI does not match what was rendered on the server.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+   */
   return (
-    <div>
+    <div className={`flex min-h-screen flex-col items-center justify-between p-24 profile`}> 
+      <h1>Create your Profile</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
