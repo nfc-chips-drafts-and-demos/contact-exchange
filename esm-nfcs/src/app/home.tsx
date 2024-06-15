@@ -132,7 +132,9 @@ export default function Home() {
           </div>)}
         {statusText && (
           <div className="my-4">
-            {statusText}
+            <div>
+              {statusText}
+            </div>
             <Link href="/create-profile">
               <button className="border rounded border-gray-400 px-4 py-2 font-medium text-md">
                 Create Profile
