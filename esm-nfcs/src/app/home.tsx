@@ -5,7 +5,7 @@ import { config } from "@/config/zuauth";
 import { execHaloCmdWeb } from "@arx-research/libhalo/api/web.js";
 import { zuAuthPopup } from "@pcd/zuauth/client";
 import { useCallback, useEffect, useState } from "react";
-
+import Link from 'next/link';
 
 type AuthState =
   | "logged out"
@@ -131,8 +131,16 @@ export default function Home() {
 >Link my tag</button>
           </div>)}
         {statusText && (
-          <div className="my-4">{statusText}</div>
+          <div className="my-4">
+            {statusText}
+            <Link href="/create-profile">
+              <button className="border rounded border-gray-400 px-4 py-2 font-medium text-md">
+                Create Profile
+              </button>
+            </Link>
+          </div>
         )}
+        
       </div>
     </main>
   );
