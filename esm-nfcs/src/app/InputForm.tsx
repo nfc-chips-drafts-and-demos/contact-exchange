@@ -3,11 +3,11 @@
 import "@/styles/form.css";
 import React, { useState, FormEvent } from 'react';
 
-interface FormData {
+interface Contact {
   name: string;
   telegram: string;
   socialLayer: string;
-  profileImage: string; // TODO: Make an image
+  profileImage: string;
 }
 
 const InputForm: React.FC = () => {
@@ -16,7 +16,7 @@ const InputForm: React.FC = () => {
   const [telegram, setTelegram] = useState<string>('');
   const [socialLayer, setSocialLayer] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
-  const [submittedData, setSubmittedData] = useState<FormData | null>(null);
+  const [submittedData, setSubmittedData] = useState<Contact | null>(null);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
