@@ -24,7 +24,6 @@ export default async function Me() {
   if (!profile) {
     redirect("/");
   }
-
   return (
     <div className="flex flex-col gap-4 border border-gray-300 rounded-md p-2">
 
@@ -38,9 +37,9 @@ export default async function Me() {
       </div>
       <div className="grid grid-cols-8 w-full">
         <div className="col-span-2 font-medium">Telegram</div>
-        <div className="col-span-6">{profile.telegram}</div>
+        <div className="col-span-6"><a href={`https://t.me/${profile.telegram}`}>{profile.telegram}</a></div>
         <div className="col-span-2 font-medium">Social Layer</div>
-        <div className="col-span-6">{profile.social_layer}</div>
+        <div className="col-span-6"><a href={`https://${profile.social_layer}.sociallayer.im`}>{profile.social_layer}</a></div>
       </div>
       <div className="flex flex-col gap-4 mt-4">
         <div className="flex gap-4">
@@ -60,6 +59,9 @@ export default async function Me() {
                   <div className="text-base font-bold">{connection.name}</div>
                 {isCommunity(connection.community) && <Community id={connection.community} />}
                 </div>
+                <button>
+                  <a href={`https://t.me/${connection.telegram}`}>Message</a>
+                </button>
               </div>
             }))}</div>}
       </div>
