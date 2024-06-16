@@ -1,0 +1,18 @@
+.status-bar {
+    padding: 15px;
+    color: white;
+    text-align: center;
+    font-size: 1em;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+  
+  .status-success {
+    background-color: green;
+  }
+  
+  .status-error {
+    background-color: red;
+  }
+  
