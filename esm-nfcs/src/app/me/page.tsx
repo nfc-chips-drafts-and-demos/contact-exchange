@@ -40,9 +40,16 @@ export default async function Me() {
 
         </div>
         {profile.connections.length === 0 && <div>
-              No connections yet! Find someone with an NFC tag, and click "Add Connection".
-            </div>}
-            {profile.connections.length > 0 && <div>{JSON.stringify(profile.connections)}</div>}
+          No connections yet! Find someone with an NFC tag, and click "Add Connection".
+        </div>}
+        {profile.connections.length > 0 &&
+          <div className="flex flex-col gap-4">
+            {profile.connections.map((connection => {
+              return <div key={connection.id} className="flex gap-4">
+                <img src={connection.avatar_url} className="w-8 h-8 rounded" alt={`Image of ${connection.name}`} />
+                <div className="text-base font-bold">{connection.name}</div>
+              </div>
+            }))}</div>}
       </div>
     </div>)
 }
