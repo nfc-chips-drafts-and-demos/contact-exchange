@@ -1,11 +1,11 @@
 "use client";
+import SubmitButton from "@/components/SubmitButton";
+import { createProfile } from "@/lib/actions";
 import { Communities } from "@/lib/communities";
 // components/InputForm.tsx
 
 import "@/styles/form.css";
-import React, { useState, FormEvent } from 'react';
-import ReactCrop from "react-image-crop";
-import 'react-image-crop/dist/ReactCrop.css'
+import React, { useState, FormEvent, useRef } from 'react';
 
 interface FormData {
   name: string;
@@ -45,6 +45,8 @@ export default function InputForm({ defaultName }: { defaultName: string }) {
     }
   };
 
+
+  const formRef = useRef<HTMLFormElement>();
   /*
   TODOS
   - style better
@@ -53,66 +55,55 @@ See more info here: https://nextjs.org/docs/messages/react-hydration-error
    */
   return (
     <div className={`p-4 profile`}>
-      <h1 className="font-bold text-lg my-4">Create your Profile</h1>
-      <div className="flex flex-col gap-4">
-        <div>
-          <label className="block">Name:</label>
-          <input
-            name="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+      <form action={createProfile} ref={formRef}>
+        <h1 className="font-bold text-lg my-4">Create your Profile</h1>
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block">Name:</label>
+            <input
+              name="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block">Telegram handle:</label>
+            <input
+              name="telegram"
+              type="text"
+              value={telegram}
+              onChange={(e) => setTelegram(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block">Social Layer username:</label>
+            <input
+              name="social-layer"
+              type="text"
+              value={socialLayer}
+              onChange={(e) => setSocialLayer(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block">Which community are you primarily affiliated with?</label>
+            <select value={community} onChange={(ev) => setCommunity(ev.target.value as any)} name="community">
+              <option key="-" disabled={community !== "-"}>- Select -</option>
+              {Object.entries(Communities).map(([id, label]) => {
+                return <option key={id} value={id.toString()}>{label}</option>;
+              })}
+            </select>
+          </div>
+          <div>
+            <label>Upload a picture:</label>
+            {selectedImage && <img src={selectedImage} alt="Uploaded" style={{ width: '100%', maxWidth: '400px' }} />}
+            <input type="file" accept="image/*" onChange={handleImageUpload} name="avatar" />
+          </div>
+          <div className="mt-4">
+            <SubmitButton onClick={() => formRef.current?.requestSubmit() } label="Create Profile" />
+          </div>
         </div>
-        <div>
-          <label className="block">Telegram handle:</label>
-          <input
-            name="telegram"
-            type="text"
-            value={telegram}
-            onChange={(e) => setTelegram(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block">Social Layer username:</label>
-          <input
-            name="social-layer"
-            type="text"
-            value={socialLayer}
-            onChange={(e) => setSocialLayer(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block">Which community are you primarily affiliated with?</label>
-          <select value={community} onChange={(ev) => setCommunity(ev.target.value as any)} name="community">
-            <option key="-" disabled={community !== "-"}>- Select -</option>
-            {Object.entries(Communities).map(([id, label]) => {
-              return <option key={id} value={id.toString()}>{label}</option>;
-            })}
-          </select>
-        </div>
-        <div>
-          <label>Upload a picture:</label>
-          {selectedImage && <img src={selectedImage} alt="Uploaded" style={{ width: '100%', maxWidth: '400px' }} />}
-          <input type="file" accept="image/*" onChange={handleImageUpload} name="avatar" />
-        </div>
-        <div className="mt-4">
-          <button className="bg-white border rounded border-gray-400 px-4 py-2 font-medium text-md" type="submit">Submit</button>
-        </div>
-      </div>
-      {submittedData && (
-        <div>
-          <h3>Profile:</h3>
-          <p>Name: {submittedData.name}</p>
-          <p>Telegram: {submittedData.telegram}</p>
-          <p>Social Layer: {submittedData.socialLayer}</p>
-          <p>Uploaded Image:
-            {selectedImage && (
-              <img src={selectedImage} alt="Uploaded" style={{ width: '100%', maxWidth: '400px' }} />
-            )}
-          </p>
-        </div>
-      )}
+      </form>
     </div>
   );
 };
