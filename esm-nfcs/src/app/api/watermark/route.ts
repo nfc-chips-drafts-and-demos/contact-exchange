@@ -1,7 +1,5 @@
-import { SessionData, ironOptions } from "@/config/iron";
+import { getSession } from "@/app/session";
 import { getRandomValues, hexToBigInt, toHexString } from "@pcd/util";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
 
 /**
  * The watermark is a unique single-use number, which is provided to the
@@ -11,10 +9,7 @@ import { cookies } from "next/headers";
  */
 export async function GET() {
   try {
-    const session = await getIronSession<SessionData>(
-      cookies() as any,
-      ironOptions
-    );
+    const session = await getSession();
     session.watermark = hexToBigInt(
       toHexString(getRandomValues(30))
     ).toString();

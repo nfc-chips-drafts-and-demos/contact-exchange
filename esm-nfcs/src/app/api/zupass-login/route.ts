@@ -1,8 +1,6 @@
-import { SessionData, ironOptions } from "@/config/iron";
+import { getSession } from "@/app/session";
 import { config } from "@/config/zuauth";
 import { authenticate } from "@pcd/zuauth/server";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
 /**
@@ -21,17 +19,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const session = await getIronSession<SessionData>(
-      cookies() as any,
-      ironOptions
-    );
+    const session = await getSession(); 
     const pcd = await authenticate(body.pcd, session.watermark ?? "", config);
+    session.commitment = pcd.claim.partialTicket.attendeeSemaphoreId;
+    session.emailFromZupass = pcd.claim.partialTicket.attendeeEmail;
+    session.nameFromZupass = pcd.claim.partialTicket.attendeeName;
 
-    session.user = pcd.claim.partialTicket;
     await session.save();
+    console.log(session);
     return Response.json({
-      user: session.user,
-      nullifier: pcd.claim.nullifierHash
+      success: true
     });
   } catch (e) {
     console.error(`[ERROR] ${e}`);

@@ -1,18 +1,13 @@
-import { SessionData, ironOptions } from "@/config/iron";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+import { getSession } from "@/app/session";
+import { redirect } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
-    const session = await getIronSession<SessionData>(
-      cookies() as any,
-      ironOptions
-    );
+    const session = await getSession();
     session.destroy();
 
-    return Response.json({
-      ok: true
-    });
+    return NextResponse.redirect(req.nextUrl.origin + "/");
   } catch (error: any) {
     console.error(`[ERROR] ${error}`);
     return new Response(`Unknown error: ${error.message}`, { status: 500 });

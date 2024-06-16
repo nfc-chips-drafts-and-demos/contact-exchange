@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   try {
     const { name, email, bio } = CreateProfileSchema.parse(body);
     const id = uuidv4();
-    await sql`INSERT INTO profiles (id, commitment, public_key, name, email, bio, telegram, community) VALUES (${id}, '', '', ${name}, ${email}, ${bio}, '', 0);`;
+    await sql`INSERT INTO profiles (id, commitment, public_key, name, email, bio, telegram, social_layer, community) VALUES (${id}, '', '', ${name}, ${email}, ${bio}, '', '', 0);`;
     return Response.json({ success: true, id })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
