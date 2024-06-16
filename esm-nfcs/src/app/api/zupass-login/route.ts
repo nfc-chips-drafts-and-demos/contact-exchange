@@ -1,5 +1,6 @@
 import { getSession } from "@/app/session";
 import { config } from "@/config/zuauth";
+import { getIdForCommitment } from "@/lib/getProfile";
 import { authenticate } from "@pcd/zuauth/server";
 import { NextRequest } from "next/server";
 
@@ -25,10 +26,15 @@ export async function POST(req: NextRequest) {
     session.emailFromZupass = pcd.claim.partialTicket.attendeeEmail;
     session.nameFromZupass = pcd.claim.partialTicket.attendeeName;
 
+    const id = await getIdForCommitment(session.commitment as string);
+    if (id) {
+      session.id = id;
+    }
+
     await session.save();
-    console.log(session);
     return Response.json({
-      success: true
+      success: true,
+      id
     });
   } catch (e) {
     console.error(`[ERROR] ${e}`);

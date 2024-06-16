@@ -30,3 +30,13 @@ export async function getProfile(id: string): Promise<ProfileWithConnections | u
 
   return profile;
 }
+
+export async function getIdForCommitment(commitment: string): Promise<string | undefined> {
+  const result = await sql`SELECT * FROM profiles WHERE commitment=${commitment}`;
+
+  if (result.rowCount === 1) {
+    return result.rows[0].id;
+  } 
+
+  return undefined;
+}

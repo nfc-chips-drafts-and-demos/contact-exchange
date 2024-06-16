@@ -7,7 +7,7 @@ import SignInWithZupass from "@/components/SignInWithZupass";
 import { Button } from "@/components/Button";
 // @ts-ignore
 import { execHaloCmdWeb } from "@arx-research/libhalo/api/web.js";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 type AuthState =
   | "logged out"
@@ -19,6 +19,8 @@ type AuthState =
 export default function Zupass({ commitment }: { commitment: string | undefined }) {
   const [pcdStr, setPcdStr] = useState<string>("");
   const [authState, setAuthState] = useState<AuthState>(commitment ? "authenticated" : "logged out");
+  const router = useRouter();
+
   useEffect(() => {
     (async () => {
       if (authState === "auth-start") {
@@ -45,6 +47,11 @@ export default function Zupass({ commitment }: { commitment: string | undefined 
             body: JSON.stringify({ pcd: result.pcdStr })
           });
 
+          const loginData = await loginResult.json();
+          if (loginData.id) {
+            router.push("/me");
+          }
+
           setAuthState("authenticated");
         } else if (result.type === "popupBlocked") {
           setAuthState("error");
@@ -55,15 +62,13 @@ export default function Zupass({ commitment }: { commitment: string | undefined 
         }
       }
     })();
-  }, [authState]);
+  }, [authState, router]);
 
   const auth = useCallback(() => {
     if (authState === "logged out" || authState === "error") {
       setAuthState("auth-start");
     }
   }, [authState]);
-
-  const router = useRouter();
 
   const linkTag = useCallback(async () => {
     let command = {
