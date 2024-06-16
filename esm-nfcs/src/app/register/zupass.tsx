@@ -93,7 +93,7 @@ export default function Zupass({ commitment }: { commitment: string | undefined 
       // the command has failed, display error to the user
       console.log(e);
     }
-  }, []);
+  }, [router]);
 
   return (
     <div>
