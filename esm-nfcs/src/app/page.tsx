@@ -6,11 +6,11 @@ export default async function Page() {
   const session = await getSession();
 
   if (session.id) {
-    return <div>Logged in!</div>;
+    redirect("/me");
   }
 
   if (session.watermark && session.commitment && session.publicKey) {
-    return <div>enter profile</div>;
+    redirect("/create-profile");
   }
 
   redirect("/register");

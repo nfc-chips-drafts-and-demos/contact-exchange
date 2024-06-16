@@ -1,7 +1,9 @@
+"use client";
 // components/InputForm.tsx
 
 import "@/styles/form.css";
 import React, { useState, FormEvent } from 'react';
+import AvatarEditor from "react-avatar-editor";
 
 interface FormData {
   name: string;
@@ -10,13 +12,27 @@ interface FormData {
   profileImage: string; // TODO: Make an image
 }
 
-const InputForm: React.FC = () => {
+const Communities = {
+  0: "AI",
+  1: "Art",
+  2: "Decentralized Social",
+  3: "DeSci",
+  4: "Longevity",
+  5: "Neurotech",
+  6: "Network States",
+  7: "Public Goods",
+  8: "Real World Crypto",
+  9: "Zero Knowledge Cryptography"
+} as const;
+
+export default function InputForm({ defaultName }: { defaultName: string }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [name, setName] = useState<string>('');
+  const [name, setName] = useState<string>(defaultName);
   const [telegram, setTelegram] = useState<string>('');
   const [socialLayer, setSocialLayer] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
   const [submittedData, setSubmittedData] = useState<FormData | null>(null);
+  const [community, setCommunity] = useState<keyof typeof Communities | "-">("-");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -45,39 +61,54 @@ const InputForm: React.FC = () => {
 See more info here: https://nextjs.org/docs/messages/react-hydration-error
    */
   return (
-    <div className={`flex min-h-screen flex-col items-center justify-between p-24 profile`}> 
-      <h1>Create your Profile</h1>
-      <form onSubmit={handleSubmit}>
+    <div className={`p-4 profile`}>
+      <h1 className="font-bold text-lg my-4">Create your Profile</h1>
+      <div className="flex flex-col gap-4">
         <div>
-          <label>Name:</label>
+          <label className="block">Name:</label>
           <input
+            name="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div>
-          <label>Telegram handle:</label>
+          <label className="block">Telegram handle:</label>
           <input
+            name="telegram"
             type="text"
             value={telegram}
             onChange={(e) => setTelegram(e.target.value)}
           />
         </div>
         <div>
-          <label>Social Layer username:</label>
+          <label className="block">Social Layer username:</label>
           <input
+            name="social-layer"
             type="text"
             value={socialLayer}
             onChange={(e) => setSocialLayer(e.target.value)}
           />
         </div>
         <div>
-          <label>Upload a picture:</label>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          <label className="block">Which community are you primarily affiliated with?</label>
+          <select value={community} onChange={(ev) => setCommunity(ev.target.value as any)} name="community">
+            <option key="-" disabled={community !== "-"}>- Select -</option>
+            {Object.entries(Communities).map(([id, label]) => {
+              return <option key={id} value={id.toString()}>{label}</option>;
+            })}
+          </select>
         </div>
-        <button type="submit">Submit</button>
-      </form>
+        <div>
+          <label>Upload a picture:</label>
+          {selectedImage && <img src={selectedImage} alt="Uploaded" style={{ width: '100%', maxWidth: '400px' }} />}
+          <input type="file" accept="image/*" onChange={handleImageUpload} name="avatar" />
+        </div>
+        <div className="mt-4">
+          <button className="bg-white border rounded border-gray-400 px-4 py-2 font-medium text-md" type="submit">Submit</button>
+        </div>
+      </div>
       {submittedData && (
         <div>
           <h3>Profile:</h3>
@@ -86,7 +117,7 @@ See more info here: https://nextjs.org/docs/messages/react-hydration-error
           <p>Social Layer: {submittedData.socialLayer}</p>
           <p>Uploaded Image:
             {selectedImage && (
-                <img src={selectedImage} alt="Uploaded" style={{ width: '100%', maxWidth: '400px' }} />
+              <img src={selectedImage} alt="Uploaded" style={{ width: '100%', maxWidth: '400px' }} />
             )}
           </p>
         </div>
@@ -95,4 +126,3 @@ See more info here: https://nextjs.org/docs/messages/react-hydration-error
   );
 };
 
-export default InputForm;

@@ -7,7 +7,7 @@ import SignInWithZupass from "@/components/SignInWithZupass";
 import { Button } from "@/components/Button";
 // @ts-ignore
 import { execHaloCmdWeb } from "@arx-research/libhalo/api/web.js";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type AuthState =
   | "logged out"
@@ -63,6 +63,8 @@ export default function Zupass({ commitment }: { commitment: string | undefined 
     }
   }, [authState]);
 
+  const router = useRouter();
+
   const linkTag = useCallback(async () => {
     let command = {
       name: "sign",
@@ -81,7 +83,7 @@ export default function Zupass({ commitment }: { commitment: string | undefined 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ publicKey: res.publicKey })
       });
-      redirect("/create-profile");
+      router.push("/create-profile");
     } catch (e) {
       // the command has failed, display error to the user
       console.log(e);
@@ -110,6 +112,14 @@ export default function Zupass({ commitment }: { commitment: string | undefined 
           <div className="my-4">
             <Button disabled={false} label="Register NFC tag" onClick={linkTag} />
           </div>
+          <button onClick={async () => {
+                  await fetch("/api/set-public-key", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ publicKey: "12345" })
+                  });
+                  router.push("/create-profile");
+          }}>force</button>
         </>
       )}
 
