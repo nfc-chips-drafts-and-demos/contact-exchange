@@ -24,13 +24,10 @@ export default async function Me() {
   if (!profile) {
     redirect("/");
   }
-<<<<<<< Updated upstream
-=======
 
   const communityCount = 10;
   const uniqueCommunities = new Set(profile.connections.map(conn => conn.community));
 
->>>>>>> Stashed changes
   return (
     <div className="flex flex-col gap-4 border border-gray-300 rounded-md p-2">
 
