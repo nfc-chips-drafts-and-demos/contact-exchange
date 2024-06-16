@@ -36,7 +36,7 @@ export default async function Me() {
       <div className="flex flex-col gap-4 mt-4">
         <div className="flex gap-4">
           <h1 className="text-xl font-bold">Connections</h1>
-          <div><a href="/add" className="bg-white border rounded border-gray-400 px-4 py-2 font-medium text-sm">Add Connection</a></div>
+          <div><a href="/add-contact" className="bg-white border rounded border-gray-400 px-4 py-2 font-medium text-sm">Add Connection</a></div>
 
         </div>
         {profile.connections.length === 0 && <div>
