@@ -1,4 +1,5 @@
 "use client";
+import { Communities } from "@/lib/communities";
 // components/InputForm.tsx
 
 import "@/styles/form.css";
@@ -12,18 +13,7 @@ interface FormData {
   profileImage: string; // TODO: Make an image
 }
 
-const Communities = {
-  0: "AI",
-  1: "Art",
-  2: "Decentralized Social",
-  3: "DeSci",
-  4: "Longevity",
-  5: "Neurotech",
-  6: "Network States",
-  7: "Public Goods",
-  8: "Real World Crypto",
-  9: "Zero Knowledge Cryptography"
-} as const;
+
 
 export default function InputForm({ defaultName }: { defaultName: string }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
