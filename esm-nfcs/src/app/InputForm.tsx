@@ -4,7 +4,8 @@ import { Communities } from "@/lib/communities";
 
 import "@/styles/form.css";
 import React, { useState, FormEvent } from 'react';
-import AvatarEditor from "react-avatar-editor";
+import ReactCrop from "react-image-crop";
+import 'react-image-crop/dist/ReactCrop.css'
 
 interface FormData {
   name: string;

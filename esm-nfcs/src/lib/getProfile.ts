@@ -16,8 +16,12 @@ interface ProfileWithConnections extends Profile {
   connections: Profile[]
 }
 
-export async function getProfile(id: string): Promise<ProfileWithConnections> {
+export async function getProfile(id: string): Promise<ProfileWithConnections | undefined> {
   const result = await sql`SELECT * FROM profiles WHERE id=${id}`;
+
+  if (result.rowCount === 0) {
+    return undefined;
+  }
 
   const profile: ProfileWithConnections = result.rows[0] as ProfileWithConnections;
 
