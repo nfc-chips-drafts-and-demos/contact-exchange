@@ -2,10 +2,14 @@
 import { useCallback} from "react";
 // @ts-ignore
 import { execHaloCmdWeb } from "@arx-research/libhalo/api/web.js";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import React, {useState, useEffect} from 'react';
+import '@/styles/status.css';
 
-export default async function AddContact() {
+// client top level (export default) fuctions can't be async
+export default function AddContact() {
     const router = useRouter();
+    const [addContactStatus, setAddContactStatus] = useState<boolean | null>(null);
     const linkContact = useCallback(async () => {
         let command = {
           name: "sign",
@@ -26,21 +30,24 @@ export default async function AddContact() {
             body: JSON.stringify({ publicKey: res.publicKey})
           })
           const addContactData = await addContactResult.json()
-          if (addContactData.success) {
-            router.push("/me")
-          }
-
+          setAddContactStatus(addContactData.success)
         } catch (e) {
-          // the command has failed, display error to the user
           console.log(e);
-          router.push("/add-contact")
         }
       }, []);
-    
-
+ 
   return (
     <div>
         <button className="bg-white border rounded border-gray-400 px-4 py-2 font-medium text-md" onClick={linkContact} >Scan Esmeraldan's NFC Tag</button>
-    </div>
+        <footer className={`status-bar ${addContactStatus === null ? '' : addContactStatus ? 'status-success' : 'status-error'}`}>
+            {addContactStatus === null ? (
+                <h1></h1>
+            ) : addContactStatus ? (
+                <h1>Successfully added contact! Add another contact.</h1>
+            ) : (
+                <h1>Error adding contact. Account may not exist or have already been added.</h1>
+            )}
+        </footer>
+    </div> 
   );
 }
