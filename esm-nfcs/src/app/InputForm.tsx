@@ -46,7 +46,7 @@ export default function InputForm({ defaultName }: { defaultName: string }) {
   };
 
 
-  const formRef = useRef<HTMLFormElement>();
+  const formRef = useRef<HTMLFormElement>(null);
   /*
   TODOS
   - style better
