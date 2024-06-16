@@ -24,6 +24,13 @@ export default async function Me() {
   if (!profile) {
     redirect("/");
   }
+<<<<<<< Updated upstream
+=======
+
+  const communityCount = 10;
+  const uniqueCommunities = new Set(profile.connections.map(conn => conn.community));
+
+>>>>>>> Stashed changes
   return (
     <div className="flex flex-col gap-4 border border-gray-300 rounded-md p-2">
 
@@ -48,10 +55,14 @@ export default async function Me() {
 
         </div>
         {profile.connections.length === 0 && <div>
-          No connections yet! Find someone with an NFC tag, and click "Add Connection".
+          No connections yet! Find someone with an NFC tag, and tap "Add Connection".
         </div>}
         {profile.connections.length > 0 &&
           <div className="flex flex-col gap-4">
+            {uniqueCommunities.size === communityCount && <div></div>}
+            {uniqueCommunities.size > communityCount && <div>
+              You've met people from <strong>{uniqueCommunities.size}</strong> of the <strong>{communityCount}</strong> communities at Edge Esmeralda. Gotta catch 'em all!
+              </div>}
             {profile.connections.map((connection => {
               return <div key={connection.id} className="flex gap-4 items-center">
                 <img src={connection.avatar_url} className="w-10 h-10 rounded" alt={`Image of ${connection.name}`} />
